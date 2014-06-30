@@ -9,7 +9,7 @@
 
 enum {COL_DAV,COL_DATA,COL_VEND,COL_VALORV,COL_CODSTA,NUM_COLDAVS };
 
-enum {COL_CODVEND,COL_PECAS,COL_DIN,COL_CAR,COL_CHE,COL_TOT,COL_CORF,NUM_COLVENDEDORESTOTAL };
+enum {COL_CODVEND,COL_PECAS,COL_DIN,COL_CAR,COL_CHE,COL_TOT,COL_NVE,COL_CORF,NUM_COLVENDEDORESTOTAL };
 
 void fechavendastotal(void){
 gtk_widget_destroy(GTK_WIDGET(calendario));
@@ -24,6 +24,7 @@ gtk_widget_destroy(GTK_WIDGET(btrefdavs));
 
   gtk_widget_set_sensitive(GTK_WIDGET(botaocliente),TRUE);
   gtk_widget_set_sensitive(GTK_WIDGET(vendastotal),TRUE);
+  gtk_widget_set_sensitive(GTK_WIDGET(btproduto),TRUE);
 }
 
 
@@ -37,7 +38,7 @@ void arvoretotalvendasvendedor (void){
 
 
 
-        storetotalvendas = gtk_list_store_new(NUM_COLVENDEDORESTOTAL,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,GDK_TYPE_COLOR);
+        storetotalvendas = gtk_list_store_new(NUM_COLVENDEDORESTOTAL,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,G_TYPE_STRING,GDK_TYPE_COLOR);
         modeltotalvendas = GTK_TREE_MODEL(storetotalvendas);
         viewtotalvendas = gtk_tree_view_new_with_model(GTK_TREE_MODEL( modeltotalvendas));
 
@@ -113,6 +114,18 @@ gtk_tree_view_append_column(GTK_TREE_VIEW(viewtotalvendas), coltven);
         gtk_tree_view_column_set_attributes(coltven, renderertven,"text", COL_PECAS,NULL);
 //gtk_tree_view_column_set_sort_column_id(col,1);
         gtk_tree_view_append_column(GTK_TREE_VIEW(viewtotalvendas), coltven);
+
+
+
+        coltven = gtk_tree_view_column_new();
+        gtk_tree_view_column_set_title(coltven, "n vendas ");
+        renderertven = gtk_cell_renderer_text_new();
+        gtk_tree_view_column_pack_start(coltven, renderertven, TRUE);
+        gtk_tree_view_column_set_attributes(coltven, renderertven,"text", COL_NVE,NULL);
+//gtk_tree_view_column_set_sort_column_id(col,1);
+        gtk_tree_view_append_column(GTK_TREE_VIEW(viewtotalvendas), coltven);
+
+
 
 
 //listadeprodutos(n_not_int,view);
@@ -291,7 +304,7 @@ sprintf(sqlvenda,"SELECT * FROM tb_payment WHERE numemp='%d' AND data_venda LIKE
 }
 
 
-
+int tnve=0;
 
 
 
@@ -317,11 +330,13 @@ vendee +=1;
 
 double total[vendee][6];
 double subtot[5]= { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+int nve[vendee];
 double tpcas;
 int tipo,t;
 int vendedor;
 double vpay;
 double tgeral;
+
 int liha,coua;
 int dd;
 dd= vendee + 1;
@@ -333,10 +348,11 @@ tpcas = 0 ;
 
 
 for (liha = 0; liha < dd; liha++)
-
+{
+nve[liha]=0;
          for (coua = 0; coua < 7; coua++)
         total[liha][coua] =0;
-
+}
 if (mysql_query(&conexao,sqlvenda))
         g_print("Erro: %s\n",mysql_error(&conexao));
 else
@@ -376,7 +392,8 @@ else if (tipo > 1 )
 total[vendedor][t]   += vpay; 
 total[vendedor][5] += vpay;
 subtot[t] +=vpay;
-
+nve[vendedor] +=1;
+tnve +=1;
 tgeral +=vpay;
 total[vendedor][0] = 0;
 
@@ -420,7 +437,7 @@ char scar[14];
 char sche[14];
 char stotal[15];
 char sfinal[15];
-
+char snve[15];
 
 
 for (linha = 0; linha < ddd; linha++){
@@ -439,7 +456,7 @@ sprintf(sdin,"%.2lf",total[linha][1]);
 sprintf(scar,"%.2lf",total[linha][2]);
 sprintf(sche,"%.2lf",total[linha][3]);
 sprintf(stotal,"%.2lf",total[linha][5]);
-
+sprintf(snve,"%d",nve[linha]);
 
 //g_print("inta = %d " , linha);
 
@@ -448,7 +465,7 @@ sprintf(stotal,"%.2lf",total[linha][5]);
 if (total[linha][5] > 0 ){
 
 gtk_list_store_append(storetotalvendas, &itervenda);
-gtk_list_store_set(storetotalvendas, &itervenda,COL_CODVEND,codvend,COL_PECAS,spcs,COL_DIN,sdin,COL_CAR,scar,COL_CHE,sche,COL_TOT,stotal,COL_CORF,&colore,-1);
+gtk_list_store_set(storetotalvendas, &itervenda,COL_CODVEND,codvend,COL_PECAS,spcs,COL_DIN,sdin,COL_CAR,scar,COL_CHE,sche,COL_TOT,stotal,COL_NVE,snve,COL_CORF,&colore,-1);
 }
 
 }
@@ -461,6 +478,7 @@ char stdin[14];
 char stcar[14];
 char stche[14];
 char stot[15];
+char stnve[15];
 colore.red = 65535;
 colore.blue = 10000;
 colore.green = 45512;
@@ -475,7 +493,7 @@ sprintf(stdin,"%.2lf",subtot[1]);
 sprintf(stcar,"%.2lf",subtot[2]);
 sprintf(stche,"%.2lf",subtot[3]);
 sprintf(stot,"%.2lf",tgeral);
-
+sprintf(stnve,"%d",tnve);
 
 //g_print("inta = %d " , linha);
 
@@ -483,7 +501,7 @@ sprintf(stot,"%.2lf",tgeral);
 
 
 gtk_list_store_append(storetotalvendas, &itervenda);
-gtk_list_store_set(storetotalvendas, &itervenda,COL_CODVEND,"total",COL_PECAS,stpcs,COL_DIN,stdin,COL_CAR,stcar,COL_CHE,stche,COL_TOT,stot,COL_CORF,&colore,-1);
+gtk_list_store_set(storetotalvendas, &itervenda,COL_CODVEND,"total",COL_PECAS,stpcs,COL_DIN,stdin,COL_CAR,stcar,COL_CHE,stche,COL_TOT,stot,COL_NVE,stnve,COL_CORF,&colore,-1);
 
 }
 
@@ -512,6 +530,8 @@ void telatotalvendas(void){
 
   gtk_widget_set_sensitive(GTK_WIDGET(botaocliente),FALSE);
   gtk_widget_set_sensitive(GTK_WIDGET(vendastotal),FALSE);
+  gtk_widget_set_sensitive(GTK_WIDGET(btproduto),FALSE);
+
   btfechavendastotal = gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE);
   gtk_fixed_put(GTK_FIXED(fixed),btfechavendastotal,1240,0);
 

@@ -436,7 +436,11 @@ g_signal_connect(G_OBJECT(cvend), "changed",G_CALLBACK(verificavendedor),NULL);
 g_signal_connect(G_OBJECT(cvend), "key-release-event",G_CALLBACK(focusnovavenda),NULL);
 g_signal_connect(G_OBJECT(ccodcli), "changed",G_CALLBACK(verificacliente),NULL);
 g_signal_connect(G_OBJECT(btnovavenda),"clicked",G_CALLBACK(ini_nova_venda),NULL);
+
+
 g_signal_connect(G_OBJECT(cbuscaprod),"changed",G_CALLBACK(verificaproduto),NULL);
+
+
 g_signal_connect(G_OBJECT(cbuscaprod),"key-release-event",G_CALLBACK(insereprodudo),NULL);
 g_signal_connect(G_OBJECT(cqtdv),"key-release-event",G_CALLBACK(insereprodudo),NULL);
 g_signal_connect(G_OBJECT(cprev),"key-release-event",G_CALLBACK(insereprodudo),NULL);

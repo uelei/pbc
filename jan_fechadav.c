@@ -89,7 +89,7 @@ if(event->keyval == 65293){
 
 gtk_widget_grab_focus(GTK_WIDGET(cbtppg));
 
-
+ gtk_combo_box_popup(GTK_COMBO_BOX(cbtppg));
 
 
 
@@ -131,6 +131,15 @@ gtk_widget_grab_focus(GTK_WIDGET(btaddpg));
 // ou finaliza direto 
 }
 }
+
+
+
+
+
+
+
+
+
 void listapagamentos(void){
 int davnumero;
 GtkTreeIter    iter;
@@ -138,8 +147,11 @@ GdkPixbuf     *icon;
 GError        *error = NULL;
 GdkColor color;
                 int idpgst;
-                char data[20],datae[20];
+                char data[20];
+char daef[20];
+char deeef[25];
                 int ano,mes,dia,hora,min,seg;
+                int anof,mesf,diaf,horaf,minf,segf;
 char parce[10];
 char valor[13];
 
@@ -179,15 +191,23 @@ sprintf(sql,"SELECT * FROM tb_payment WHERE cod_dav = '%d' AND numemp ='%d' ; ",
           while ((linhas=mysql_fetch_row(resp)) != NULL)  //enquanto linhas for diferente de nulo faca 
               {
 
+gtk_list_store_append(listtore, &iter);
+
+
+
                 sscanf(linhas[11],"%d",&idpgst);
                 sscanf(linhas[8],"%d-%d-%d %d:%d:%d",&ano,&mes,&dia,&hora,&min,&seg);
                 sprintf(data,"%d/%d/%d",dia,mes,ano);
-                sscanf(linhas[7],"%d-%d-%d %d:%d:%d",&ano,&mes,&dia,&hora,&min,&seg);
-                sprintf(datae,"%d/%d/%d",dia,mes,ano);
+                sscanf(linhas[7],"%d-%d-%d %d:%d:%d",&anof,&mesf,&diaf,&horaf,&minf,&segf);
+                sprintf(daef,"%d/%d/%d",diaf,mesf,anof);
                 sprintf(parce,"%s",linhas[6]);
                 sprintf(valor,"%s",linhas[5]);
                 sscanf(linhas[3],"%d",&idtppg);
                 sscanf(linhas[13],"%d",&cx);
+
+
+
+gtk_list_store_set(listtore, &iter,COL_DATAP,daef);
 
 sprintf(svalorre,"%s",valor);
 char *pvalorre= str_replace(svalorre,".", ",");
@@ -195,6 +215,7 @@ char *pvalorre= str_replace(svalorre,".", ",");
 valorre = strtod(pvalorre,NULL);
 
 valorsomado = valorsomado + valorre;
+
 
 
                 MYSQL_RES *respe;
@@ -284,10 +305,13 @@ valorsomado = valorsomado + valorre;
                                          }
                         } 
 //enum {COL_TPCONTA,COL_PARC,COL_VALOR,COL_DATAI,COL_DATAP,COL_CX,COL_SIT,NUM_COLU};
-gtk_list_store_append(listtore, &iter);
-gtk_list_store_set(listtore, &iter,COL_IPAY,linhas[0],COL_TPCONTA,tpdepag,COL_PARC,parce,COL_VALOR,valor,COL_DATAI,data,COL_DATAP,datae,COL_CX,desccx,COL_ICO,icon,COL_COR,&color,-1);
+g_print("dataef %s \n",daef);
 
 
+
+gtk_list_store_set(listtore, &iter,COL_IPAY,linhas[0],COL_TPCONTA,tpdepag,COL_PARC,parce,COL_VALOR,valor,COL_DATAI,data,COL_CX,desccx,COL_ICO,icon,COL_COR,&color,-1);
+
+//gtk_list_store_set(listtore, &iter,COL_IPAY,linhas[0],COL_TPCONTA,tpdepag,COL_PARC,parce,COL_VALOR,valor,COL_DATAI,data,COL_DATAP,"dataf",COL_CX,desccx,COL_ICO,icon,COL_COR,&color,-1);
 
 int vs,vi;
 

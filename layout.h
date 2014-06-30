@@ -6,6 +6,7 @@ GtkWidget *window;
 GtkWidget *toolbar;
 GtkToolItem *botaocliente;
 GtkToolItem *vendastotal;
+GtkToolItem *btproduto;
 GtkToolItem *bpvd;
 GtkToolItem *save;
 GtkToolItem *sep;

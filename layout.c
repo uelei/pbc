@@ -2,6 +2,7 @@
 #include "lay_lista_cli.h"
 #include "lay_pdv.h"
 #include "caixavendas.h"
+#include "produtos.h"
 
 //principal
 GtkWidget *vbox;
@@ -9,6 +10,7 @@ GtkWidget *fixed;
 GtkWidget *window;
 GtkWidget *toolbar;
 GtkToolItem *botaocliente;
+GtkToolItem *btproduto;
 GtkToolItem *bpdv;
 GtkToolItem *save;
 GtkToolItem *vendastotal;
@@ -26,7 +28,7 @@ void barraprincipal(void)
 
   gtk_container_set_border_width(GTK_CONTAINER(toolbar), 2);
 
-GtkWidget *icon_new,*icon_pdv;
+GtkWidget *icon_new,*icon_pdv,*icon_produto;
 
   icon_new = gtk_image_new_from_file("imagens/kdmconfig.png");
   botaocliente = gtk_tool_button_new(icon_new, NULL);
@@ -35,11 +37,14 @@ GtkWidget *icon_new,*icon_pdv;
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),botaocliente, -1);
 
 
+
+  icon_produto = gtk_image_new_from_file("imagens/produtos.png");
+  btproduto = gtk_tool_button_new(icon_produto,NULL);
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),btproduto,-1);
+
+
   icon_pdv = gtk_image_new_from_file("imagens/buy_32.png");
   bpdv= gtk_tool_button_new(icon_pdv, NULL);
-
-
-  //bpdv = gtk_tool_button_new_from_stock(GTK_STOCK_OPEN);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), bpdv, -1);
 
 //  save = gtk_tool_button_new_from_stock(GTK_STOCK_SAVE);
@@ -73,6 +78,9 @@ GtkWidget *icon_vendastotal;
   g_signal_connect_swapped(G_OBJECT(bpdv), "clicked",G_CALLBACK(windowpdvc),NULL);
 
   g_signal_connect_swapped(G_OBJECT(vendastotal), "clicked",G_CALLBACK(telatotalvendas),NULL);
+
+g_signal_connect_swapped(G_OBJECT(btproduto),"clicked",G_CALLBACK(telaprodutos),NULL);
+
 
   fixed = gtk_fixed_new();
   gtk_box_pack_start(GTK_BOX(vbox),fixed,FALSE,FALSE,1);

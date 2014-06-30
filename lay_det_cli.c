@@ -131,7 +131,7 @@ gtk_fixed_put(GTK_FIXED(fixed),lnocli,10,70);
   swchcli = gtk_scrolled_window_new(NULL,NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(swchcli),GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW(swchcli),GTK_SHADOW_ETCHED_IN);
-  gtk_widget_set_usize (swchcli, 620, 180);
+  gtk_widget_set_usize (swchcli, 820, 280);
 
 
   listpgclientecod(swchcli,clisele);
@@ -264,6 +264,8 @@ apagarcamposdetalecliente();
 gtk_widget_destroy(barcli);
 
 gtk_widget_set_sensitive(GTK_WIDGET(botaocliente),TRUE);
+gtk_widget_set_sensitive(GTK_WIDGET(btproduto),TRUE);
+gtk_widget_set_sensitive(GTK_WIDGET(vendastotal),TRUE);
 
 
 

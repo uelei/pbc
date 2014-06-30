@@ -4,7 +4,7 @@
 CC=gcc
 CFLAGS= -g -Wall `pkg-config --cflags gtk+-2.0` -lmysqlclient 
 
-EXEC=piubol0.10.exe
+EXEC=piubol0.20.exe
 SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 

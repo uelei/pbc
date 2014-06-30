@@ -311,6 +311,113 @@ return i;
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int finprod(void){
+
+char str[300]="<big><b>";
+//char str2[10];
+//char str[]
+char str2[]="</b></big>";
+
+
+MYSQL_RES *respfp;
+MYSQL_ROW lfp;
+
+char codbusca[20];
+sprintf(codbusca,"%s",gtk_entry_get_text(GTK_ENTRY(cbuscaprod)));
+
+char sql[1000];
+sprintf(sql,"SELECT * FROM tb_estoque  WHERE cod_prod LIKE '%s' AND numemp LIKE'%d';",codbusca,numep());
+if (mysql_query(&conexao,sql))
+        g_print("Erro: %s\n",mysql_error(&conexao));
+else
+        {
+///g_print("-/n/n--1--sql- %s ",sql);
+                respfp = mysql_store_result(&conexao);//recebe a consulta
+
+                                while ((lfp=mysql_fetch_row(respfp)) != NULL)  //enquanto linhas for diferente de nulo faca 
+                                        {
+                                                //gtk_label_set_text(GTK_LABEL(lnomecliente),linhas[1]);
+
+                                                strcat(str,lfp[4]);
+                                                strcat(str,str2);
+
+//ldesprod = gtk_label_new("");
+//gtk_label_set_markup(GTK_LABEL(ldesprod), "<big><b> produto  </b> </big> ");
+
+//sprintf(ies,"%s",lfp[0]);
+//sprintf(sprc,"%s",lfp[8]);
+//Replace(linhas[7],".",",");
+
+//valido = 1;
+//char *new = str_replace(lfp[7], ".", ",");
+//gtk_entry_set_text(GTK_ENTRY(cprev),new);
+gtk_label_set_markup(GTK_LABEL(ldesprod),str);
+}
+mysql_free_result(respfp);
+}
+
+return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int gradeinterna (char descricaodagrade[70]){
 int igrad;
 char codbusca[20];
@@ -318,7 +425,6 @@ sprintf(codbusca,"%s",gtk_entry_get_text(GTK_ENTRY(cbuscaprod)));
 // g_print("Erro: %s\n",descricaodagrade);
 MYSQL_RES *rep;
 MYSQL_ROW ls;
-char strcom[70];
 char sqll[1000];
 sprintf(sqll,"SELECT * FROM tb_grad WHERE codprod='%s' AND des_grade like '%%%s%%' AND numemp = '%d';",codbusca,descricaodagrade,numep());
 
@@ -356,54 +462,93 @@ return igrad;
 
 
 
-void verificaproduto(void){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int verificaproduto(void){
 MYSQL_RES *resp;
 MYSQL_ROW linhas;
-
+char str[300]="<big><b>";
+char str2[20]="</b></big>";
 char codbusca[20];
 sprintf(codbusca,"%s",gtk_entry_get_text(GTK_ENTRY(cbuscaprod)));
 
 char sql[1000];
-sprintf(sql,"SELECT * FROM tb_estoque  WHERE cod_prod LIKE '%s' AND numemp like '%%%d%%';",codbusca,numep());
+sprintf(sql,"SELECT * FROM tb_estoque  WHERE cod_prod LIKE '%s' AND numemp LIKE'%d';",codbusca,numep());
 if (mysql_query(&conexao,sql))
         g_print("Erro: %s\n",mysql_error(&conexao));
 else
         {
+//g_print("-/n/n--1--sql- %s ",sql);
                 resp = mysql_store_result(&conexao);//recebe a consulta
 
                                 while ((linhas=mysql_fetch_row(resp)) != NULL)  //enquanto linhas for diferente de nulo faca 
                                         {
                                                 //gtk_label_set_text(GTK_LABEL(lnomecliente),linhas[1]);
-                                                char str[]="<big><b>";
-                                                char str2[]="</b></big>";
+                                                //char str[];
+                                                //char str2[]="</b></big>";
                                                 strcat(str,linhas[4]);
                                                 strcat(str,str2);
+//g_print("---1---");
 //ldesprod = gtk_label_new("");
 //gtk_label_set_markup(GTK_LABEL(ldesprod), "<big><b> produto  </b> </big> ");
 
-
-char preco[10];
 sprintf(ies,"%s",linhas[0]);
 sprintf(sprc,"%s",linhas[8]);
 //Replace(linhas[7],".",",");
+
 valido = 1;
 char *new = str_replace(linhas[7], ".", ",");
 gtk_entry_set_text(GTK_ENTRY(cprev),new);
 gtk_label_set_markup(GTK_LABEL(ldesprod),str);
-
-
-
-
-
-
+//g_print("---2---");
 
 MYSQL_RES *rep;
 MYSQL_ROW ls;
-char strcom[70];
+char strcom[200];
 char sqll[1000];
 sprintf(sqll,"SELECT * FROM tb_grad WHERE iestoque ='%s';",linhas[0]);
-
-
 
   if (mysql_query(&conexao,sqll))
       g_print("Erro: %s\n",mysql_error(&conexao));
@@ -418,6 +563,7 @@ sprintf(sqll,"SELECT * FROM tb_grad WHERE iestoque ='%s';",linhas[0]);
                         strcat(strcom,ls[4]);
                         strcat(strcom," = ");
                         strcat(strcom,ls[3]);
+//g_print("---3---");
                         gtk_combo_box_append_text(GTK_COMBO_BOX(combograde), ls[4]);
                         gra=1;
                         f++;
@@ -435,12 +581,12 @@ sprintf(sqll,"SELECT * FROM tb_grad WHERE iestoque ='%s';",linhas[0]);
           }
           mysql_free_result(rep);//limpa a variável do resultado: resp
         }
+//g_print("---4---");
 
 
 
 
-
-
+///se nao achar produto 
                                         }
         if ((int)mysql_num_rows(resp) < 1 )
                 {
@@ -458,9 +604,13 @@ valido = 0;
                         //gtk_widget_set_sensitive(GTK_WIDGET(btnovavenda),FALSE);
                 }
         }
+
+
+    //      mysql_free_result(resp);
+//g_print("\n\n\n----56--");
+
+return 0;
 }
-
-
 
 
 
@@ -686,6 +836,7 @@ if(event->keyval == 65293)
                                                                 //g_print("igrad %d ",gradeinterna(gtk_combo_box_get_active_text(GTK_COMBO_BOX(combograde))));
                                                         }else{
 gtk_widget_grab_focus(combograde);
+ gtk_combo_box_popup(GTK_COMBO_BOX(combograde));
 }
                                         }
 

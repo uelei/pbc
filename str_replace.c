@@ -1,7 +1,9 @@
-
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "str_replace.h"
 
-char * str_replace(char *str, char *old,char *new) {
+char* str_replace(char *str, char *old,char *new) {
   int i, count = 0;
   int newlen = strlen(new);
   int oldlen = strlen(old);
@@ -11,7 +13,7 @@ char * str_replace(char *str, char *old,char *new) {
       ++count, i += oldlen - 1;
  
   char *ret = (char *) calloc(i + 1 + count * (newlen - oldlen), sizeof(char));
-  if (!ret) return;
+  if (!ret) return "";
  
   i = 0;
   while (*str)
@@ -25,5 +27,6 @@ char * str_replace(char *str, char *old,char *new) {
   ret[i] = '\0';
 
   return ret;
+
 }
 

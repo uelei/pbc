@@ -32,7 +32,11 @@ void novcli(GtkWidget *widget,gpointer poniter);
 
 void upbotaocliente(void){
 
+
 gtk_widget_set_sensitive(GTK_WIDGET(botaocliente),TRUE);
+gtk_widget_set_sensitive(GTK_WIDGET(btproduto),TRUE);
+gtk_widget_set_sensitive(GTK_WIDGET(vendastotal),TRUE);
+
 gtk_widget_destroy(barcli);
 
 }
@@ -153,6 +157,9 @@ void  on_changed(GtkWidget *widget,gpointer ocli)
 void listadecliente (void){
 
   gtk_widget_set_sensitive(GTK_WIDGET(botaocliente), FALSE);
+
+gtk_widget_set_sensitive(GTK_WIDGET(btproduto),FALSE);
+gtk_widget_set_sensitive(GTK_WIDGET(vendastotal),FALSE);
 
   //gtk_fixed_put(GTK_FIXED(fixed),menucliente(),0,0);
 
