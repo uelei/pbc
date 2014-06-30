@@ -1,13 +1,5 @@
 void conecta(void);
 int fechacn(void);
 void fechafcn(void);
-int scliente(GtkWidget *entri, gpointer treecli);
-int listchclientecod (gpointer treeclich,char clicod[]);
-char* dadoscliente (char codclid[], int campo); 
-int updatecliente (char dcampo[], char valorup[],char codcli[]);
-char* lastnewcliente(void);
-int listcombocx( gpointer combocxd );
-char* dadosche(char dcampo[], int campo);
-char* newcheque(void);
-int updatechquecampo(char dcampo[], char valorup[],char codch[]);
-int apagacli(char codcli[]);
+
+MYSQL conexao ;
