@@ -1,4 +1,4 @@
-#include<mysql/mysql.h>
+#include <mysql/mysql.h>
 #include <gtk/gtk.h>
 #include "layout.h"
 #include "lay_lista_cli.h"
